@@ -5,13 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * SimpleCompatibilityTest - Diagnóstico de compatibilidade
- *
- * LOCALIZAÇÃO: src/test/java/br/com/fuctura/integration/SimpleCompatibilityTest.java
- *
- * Teste mais simples para identificar problemas de compatibilidade
- */
+
 class SimpleCompatibilityTest {
 
     @Test
@@ -43,7 +37,6 @@ class SimpleCompatibilityTest {
 
         assertEquals(2, 1 + 1, "JUnit deve estar funcionando");
         assertTrue(true, "Assertions devem funcionar");
-        assertNotNull("test", "NotNull deve funcionar");
 
         System.out.println("✅ JUnit 5 funcionando!");
     }
