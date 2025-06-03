@@ -4,22 +4,96 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
              version="2.2">
 
-    <!-- unidade de persistencia -->
-    <persistence-unit name="FUCTURA-PU"> <!-- COPIAR E COLAR NA CLASSE JAVA -->
+    <!-- ============================================ -->
+    <!-- PRODUCTION UNIT: Aiven Cloud PostgreSQL     -->
+    <!-- ============================================ -->
+    <persistence-unit name="FUCTURA-PU-PROD">
         <properties>
-            <!-- Propriedades JDBC -->
+            <!-- Aiven Cloud PostgreSQL Configuration -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:postgresql://pg-3eaf49bd-javajdk2023-fba0.h.aivencloud.com:26925/postgres?sslmode=require" />
+            <property name="jakarta.persistence.jdbc.user" value="pjmaciel" />
+            <property name="jakarta.persistence.jdbc.password" value="${db.password}" />
+
+            <!-- SSL Configuration for Aiven -->
+            <property name="jakarta.persistence.jdbc.ssl" value="true" />
+            <property name="jakarta.persistence.jdbc.sslfactory" value="org.postgresql.ssl.DefaultJavaSSLFactory" />
+
+            <!-- Hibernate Configuration for Production -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="validate" />
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="false" />
+            <property name="hibernate.connection.pool_size" value="20" />
+            <property name="hibernate.connection.autocommit" value="false" />
+            <property name="hibernate.cache.use_second_level_cache" value="true" />
+            <property name="hibernate.cache.use_query_cache" value="true" />
+        </properties>
+    </persistence-unit>
+
+    <!-- ============================================ -->
+    <!-- DEVELOPMENT UNIT: Local PostgreSQL          -->
+    <!-- ============================================ -->
+    <persistence-unit name="FUCTURA-PU-DEV">
+        <properties>
+            <!-- Local PostgreSQL Configuration -->
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
             <property name="jakarta.persistence.jdbc.url"
                       value="jdbc:postgresql://localhost:5432/libraryjh" />
             <property name="jakarta.persistence.jdbc.user" value="postgres" />
             <property name="jakarta.persistence.jdbc.password" value="postgres" />
-            <!-- Configurações específicas do Hibernate -->
+
+            <!-- Hibernate Configuration for Development -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.connection.pool_size" value="10" />
+            <property name="hibernate.connection.autocommit" value="false" />
+        </properties>
+    </persistence-unit>
+
+    <!-- ============================================ -->
+    <!-- TEST UNIT: H2 In-Memory Database            -->
+    <!-- ============================================ -->
+    <persistence-unit name="FUCTURA-PU-TEST">
+        <properties>
+            <!-- H2 In-Memory Database for Tests -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL" />
+            <property name="jakarta.persistence.jdbc.user" value="sa" />
+            <property name="jakarta.persistence.jdbc.password" value="" />
+
+            <!-- Hibernate Configuration for Tests -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.connection.pool_size" value="5" />
+        </properties>
+    </persistence-unit>
+
+    <!-- ============================================ -->
+    <!-- DEFAULT UNIT: Points to Development         -->
+    <!-- ============================================ -->
+    <persistence-unit name="FUCTURA-PU">
+        <properties>
+            <!-- Default points to Development Environment -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:postgresql://localhost:5432/libraryjh" />
+            <property name="jakarta.persistence.jdbc.user" value="postgres" />
+            <property name="jakarta.persistence.jdbc.password" value="postgres" />
+
+            <!-- Hibernate Configuration -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.connection.pool_size" value="10" />
         </properties>
-
     </persistence-unit>
+
 </persistence>

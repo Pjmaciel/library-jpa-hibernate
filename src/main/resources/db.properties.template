@@ -1,0 +1,4 @@
+ dburl=jdbc:postgresql://pg-3eaf49bd-javajdk2023-fba0.h.aivencloud.com:26925/postgres
+   user=pjmaciel
+   password=YOUR_PASSWORD_HERE
+   useSSL=false
