@@ -1,12 +1,19 @@
 package br.com.fuctura.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "category")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
@@ -15,40 +22,17 @@ public class Category implements Serializable {
     private String name;
     private String description;
 
-
-    public Category() {
-    }
-
-    public Category(Long id, String name, String description) {
-        this.id = id;
+    public Category(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public Long getId() {
-        return id;
+    public boolean isValid() {
+        return name != null && !name.trim().isEmpty()
+                && description != null && !description.trim().isEmpty();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    // Sobrescrever toString do Lombok.
     @Override
     public String toString() {
         return String.format("Category{id=%d, name='%s', description='%s'}",
@@ -57,5 +41,4 @@ public class Category implements Serializable {
                 description != null ? (description.length() > 50 ? description.substring(0, 47) + "..." : description) : "null"
         );
     }
-
 }

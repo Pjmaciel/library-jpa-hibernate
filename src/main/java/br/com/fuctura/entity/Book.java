@@ -1,13 +1,21 @@
 package br.com.fuctura.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "book")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
@@ -19,17 +27,15 @@ public class Book implements Serializable {
 
     @Column(name = "isbn")
     private String isbn;
-    private Date releaseYear;
+
+    @Column(name = "release_year")
+    private LocalDate releaseYear;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public Book() {
-    }
-
-    public Book(Long id, String title, String author, String synopsis, String isbn, Date releaseYear, Category category) {
-        this.id = id;
+    public Book(String title, String author, String synopsis, String isbn, LocalDate releaseYear, Category category) {
         this.title = title;
         this.author = author;
         this.synopsis = synopsis;
@@ -38,62 +44,19 @@ public class Book implements Serializable {
         this.category = category;
     }
 
-    public Long getId() {
-        return id;
+    public boolean isValid() {
+        return title != null && !title.trim().isEmpty()
+                && author != null && !author.trim().isEmpty()
+                && isbn != null && !isbn.trim().isEmpty()
+                && releaseYear != null
+                && category != null;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getCategoryName() {
+        return category != null ? category.getName() : null;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getSynopsis() {
-        return synopsis;
-    }
-
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public Date getReleaseYear() {
-        return releaseYear;
-    }
-
-    public void setReleaseYear(Date releaseYear) {
-        this.releaseYear = releaseYear;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
+    // Sobrescrever toString do Lombok
     @Override
     public String toString() {
         return String.format("Book{id=%d, title='%s', author='%s', isbn='%s', year=%s}",
@@ -101,7 +64,7 @@ public class Book implements Serializable {
                 title != null ? title : "null",
                 author != null ? author : "null",
                 isbn != null ? isbn : "null",
-                releaseYear != null ? new java.text.SimpleDateFormat("yyyy").format(releaseYear) : "null"
+                releaseYear != null ? releaseYear.format(DateTimeFormatter.ofPattern("yyyy")) : "null"
         );
     }
 }
