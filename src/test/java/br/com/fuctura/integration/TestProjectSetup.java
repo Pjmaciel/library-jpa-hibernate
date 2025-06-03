@@ -5,6 +5,8 @@ import br.com.fuctura.entity.Category;
 import jakarta.persistence.*;
 import org.junit.jupiter.api.*;
 
+import java.sql.Date;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -215,7 +217,7 @@ class TestProjectSetup {
             testBook.setAuthor("Autor Teste");
             testBook.setSynopsis("Livro criado durante teste de setup do projeto");
             testBook.setIsbn("TEST-123-SETUP");
-            testBook.setReleaseYear(java.sql.Date.valueOf("2024-01-01"));
+            testBook.setReleaseYear(Date.valueOf("2024-01-01").toLocalDate());
             testBook.setCategory(testCategory);
 
             assertNotNull(testCategory.getName(), "Category deve ter nome");
